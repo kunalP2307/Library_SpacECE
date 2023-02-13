@@ -44,13 +44,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 // need to add validation function call
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                finish();
             }
         });
 
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // sign up
+                startActivity(new Intent(LoginActivity.this, Check_User.class));
 
             }
         });
@@ -58,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // forgot password
+                startActivity(new Intent(LoginActivity.this, Forgot_password.class));
             }
         });
     }

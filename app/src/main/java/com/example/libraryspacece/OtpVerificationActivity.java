@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class OtpVerification extends AppCompatActivity {
+public class OtpVerificationActivity extends AppCompatActivity {
     
     Button button_validate;
 
@@ -23,7 +23,7 @@ public class OtpVerification extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // write code here
-                Toast.makeText(OtpVerification.this, "Validation Completed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpVerificationActivity.this, "Validation Completed", Toast.LENGTH_SHORT).show();
             }
         });
     }

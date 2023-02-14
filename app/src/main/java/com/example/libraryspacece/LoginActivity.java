@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +20,19 @@ public class LoginActivity extends AppCompatActivity {
     TextView textViewSignUp, textViewForgotPassword;
     EditText editTextEmail, editTextPassword;
     Button buttonLogin;
-
+    String userType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getUserType();
         bindComponents();
         addListeners();
+        Toast.makeText(this, ""+userType, Toast.LENGTH_SHORT).show();
+    }
 
+    private void getUserType(){
+        userType = getIntent().getStringExtra("USER_TYPE_EXTRA");
     }
 
     private void bindComponents(){
@@ -41,17 +47,20 @@ public class LoginActivity extends AppCompatActivity {
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                // need to add validation function call
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                finish();
+                if(isValidInput()){
+                    // if login is valid
+                    if(userType.equals("user"))
+                        startActivity(new Intent(getApplicationContext(), UserHomeActivity.class));
+                    else
+                        startActivity(new Intent(getApplicationContext(), DeliveryAgentHomeActivity.class));
+                }
             }
         });
 
         textViewSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, Check_User.class));
+                startActivity(new Intent(LoginActivity.this, SelectUserTypeActivity.class));
 
             }
         });
@@ -59,27 +68,28 @@ public class LoginActivity extends AppCompatActivity {
         textViewForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, Forgot_password.class));
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
             }
         });
     }
 
-    //TODO: Password checking must be debug properly
-    private void isValidInput(){
+    private boolean isValidInput(){
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
 
         if(email.isEmpty())
-           setError(editTextEmail, "This Field Cannot be Empty");
+            return setError(editTextEmail, "This Field Cannot be Empty");
 
         if(!Patterns.EMAIL_ADDRESS.matcher(email).matches())
-          setError(editTextEmail, "Please Enter Valid Email Address");
+            return setError(editTextEmail, "Please Enter Valid Email Address");
 
         if(password.isEmpty())
-            setError(editTextPassword, "This Field Cannot be Empty");
+            return setError(editTextPassword, "This Field Cannot be Empty");
 
-        if(password.length() < 8 || !isValidPassword(password) ){
-            setError(editTextPassword,"Password must contain atleast 8 characters with minimum one number and one symbol");}
+        if(password.length() < 8)
+            return setError(editTextPassword,"Password must contain atleast 8 characters with minimum one number and one symbol");
+
+        return true;
     }
 
     private boolean setError(EditText editText, String error){
@@ -88,9 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
-
-
-    //TODO: This function must be check once
     public static boolean isValidPassword(final String password) {
 
         Pattern pattern;

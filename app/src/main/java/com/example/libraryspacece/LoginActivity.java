@@ -98,6 +98,9 @@ public class LoginActivity extends AppCompatActivity {
         return false;
     }
 
+
+
+    // Add this validation later
     public static boolean isValidPassword(final String password) {
 
         Pattern pattern;
